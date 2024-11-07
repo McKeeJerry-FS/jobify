@@ -6,6 +6,7 @@ const app = express();
 import morgan from 'morgan';
 import mongoose from 'mongoose';
 import errorHandlerMiddleware from './middleware/errorHandlerMiddleware.js';
+import { body, validationResult } from 'express-validator';
 
 //routers
 import jobRouter from './routes/jobRouter.js';
@@ -29,10 +30,20 @@ app.use('*', (err, req, res, next) => {
     res.status(500).json({ msg:'something went wrong...'});
 });
 
-// app.post('/', (req, res) => {
-//     console.log(req);
-//     res.json({ message: 'Data Recieved', data: req.body});
-// });
+app.post('/api/v1/test', 
+    [body('name').notEmpty().withMessage('name is required')], 
+    (res, req, next) => {
+    const errors = validationResult(req);
+    if(!errors.isEmpty()){
+        const errorMessages = errors.array().map((error) => error.msg);
+        return res.status(400).json({errors: errorMessages})
+    }
+    next();
+    },
+    (res, req) => {
+        const { name } = req.body;
+        res.json({ msg: `Hello ${name}!`});
+});
 
 const port = process.env.PORT || 5100;
 try {
