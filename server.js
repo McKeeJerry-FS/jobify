@@ -5,11 +5,14 @@ import express from 'express';
 const app = express();
 import morgan from 'morgan';
 import mongoose from 'mongoose';
+
+
+// middleware
 import errorHandlerMiddleware from './middleware/errorHandlerMiddleware.js';
 
 
 
-//routers
+// routers
 import jobRouter from './routes/jobRouter.js';
 import authRouter from './routes/authRouter.js';
 
@@ -21,18 +24,13 @@ app.use(express.json());
 
 app.use('/api/v1/jobs', jobRouter);
 app.use('/api/v1/auth', authRouter);
-app.use(errorHandlerMiddleware);
 
 
 app.use('*', (req, res) => {
     res.status(404).json({msg: 'Not Found'});
 });
 
-app.use('*', (err, req, res, next) => {
-    console.log(err);
-    res.status(500).json({ msg:'something went wrong...'});
-});
-
+app.use(errorHandlerMiddleware);
 
 const port = process.env.PORT || 5100;
 try {
