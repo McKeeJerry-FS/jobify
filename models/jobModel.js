@@ -1,13 +1,12 @@
 import mongoose from 'mongoose';
+import { JOB_STATUS, JOB_TYPE, JOB_SORT_BY } from '../utils/constants.js';
 
 const JobSchema = new mongoose.Schema({
     compnay:String,
     position:String,
     jobStatus:{
         type:String,
-        enum:[
-            'interview', 'declined', 'pending'
-        ],
+        enum:Object.values(JOB_STATUS),
         default: 'pending',
     },
     jobType:{
