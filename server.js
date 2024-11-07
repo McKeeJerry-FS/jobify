@@ -7,7 +7,7 @@ import morgan from 'morgan';
 import mongoose from 'mongoose';
 import errorHandlerMiddleware from './middleware/errorHandlerMiddleware.js';
 
-import { validateTest } from './middleware/validationMiddleware.js';
+
 
 //routers
 import jobRouter from './routes/jobRouter.js';
@@ -31,10 +31,6 @@ app.use('*', (err, req, res, next) => {
     res.status(500).json({ msg:'something went wrong...'});
 });
 
-app.post('/api/v1/test',validateTest, (req, res) => {
-      const { name } = req.body;
-      res.json({ msg: `hello ${name}` });
-});
 
 const port = process.env.PORT || 5100;
 try {
