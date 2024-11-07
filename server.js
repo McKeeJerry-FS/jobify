@@ -5,6 +5,7 @@ import express from 'express';
 const app = express();
 import morgan from 'morgan';
 import mongoose from 'mongoose';
+import errorHandlerMiddleware from './middleware/errorHandlerMiddleware.js';
 
 //routers
 import jobRouter from './routes/jobRouter.js';
@@ -16,7 +17,7 @@ if (process.env.NODE_ENV === 'development'){
 app.use(express.json());
 
 app.use('/api/v1/jobs', jobRouter);
-
+app.use(errorHandlerMiddleware);
 
 
 app.use('*', (req, res) => {
