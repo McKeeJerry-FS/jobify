@@ -4,7 +4,10 @@ import { StatusCodes } from 'http-status-codes';
 
 
 export const getAllJobs = async (req, res) => {
-    const jobs = await Job.find({});
+    console.log(req);
+    const jobs = await Job.find({
+        createdBy: req.user.userId
+    });
     res.status(StatusCodes.OK).json({ jobs });
 };
 
@@ -14,7 +17,7 @@ export const getJob = async (req, res) => {
 };
 
 export const createJob = async (req, res) => {
-    const { company, position } = req.body;
+    req.body.createdBy = req.user.userId;
     const job = await Job.create({ company, position });
     res.status(StatusCodes.CREATED).json({ job });
 };
